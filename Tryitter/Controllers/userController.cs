@@ -4,7 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 [Route("[controller]")]
 public class UserController : ControllerBase
 {
-  public UserController() {}
+  private readonly ITryRepository _repository;
+  public UserController(ITryRepository repository) 
+  {
+    _repository = repository;
+  }
 
   [HttpGet]
   public async Task<IActionResult> GetUser()

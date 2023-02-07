@@ -10,6 +10,7 @@ public class TryitterDB : DbContext
     {
       optionsBuilder.UseSqlServer(@"
         Server=127.0.0.1;
+        User=SA;
         Password=Tryitter123;
         Database=Tryitter;
         trustServerCertificate=true;

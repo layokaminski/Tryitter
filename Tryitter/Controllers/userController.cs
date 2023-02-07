@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
-[Route("[controller")]
+[Route("[controller]")]
 public class UserController : ControllerBase
 {
   public UserController() {}

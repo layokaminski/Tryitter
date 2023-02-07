@@ -5,7 +5,11 @@ using Microsoft.AspNetCore.Mvc;
 
 public class PostController : ControllerBase
 {
-  public PostController() {}
+  private readonly ITryRepository _repository;
+  public PostController(ITryRepository repository) 
+  {
+    _repository = repository;
+  }
 
   [HttpGet]
   public async Task<IActionResult> GetPost()

@@ -1,48 +1,46 @@
 using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore;
+using Tryitter.Repository;
 
-public class TryRepository : ITryRepository
+namespace Tryitter.Repository
 {
-  private DbContext _context { get; set; }
-
-  public TryRepository(DbContext context)
+  public class TryRepository : ITryRepository
   {
-    _context = context;
-  }
+    private DbContext _context { get; set; }
 
-  public IEnumerable<T> GetAll<T>() where T : class
-  {
-    var result = _context.Set<T>().ToList();
-
-    if (result == null)
+    public TryRepository(DbContext context)
     {
-      throw new Exception("Users Not Found!");
+      _context = context;
     }
 
-    return result;
-  }
-
-  public T GetById<T>(int id) where T : class
-  {
-    var result = _context.Find<T>(id);
-
-    if (result == null)
+    public async Task<IEnumerable<T>> GetAll<T>() where T : class
     {
-      throw new Exception("Users Not Found!");
+      return await Task.Run(() => _context.Set<T>());
     }
 
-    return result;
+    public async Task<T?> GetById<T>(int id) where T : class
+    {
+      return await _context.FindAsync<T>(id);
+    }
+
+  public async Task<T> Create<T>(T entity) where T : class
+  {
+    return await Update(entity);
   }
 
-  public void Create<T>(T entity) where T : class
+  public async Task<T> Update<T>(T entity) where T : class
   {
-    _context.Add(entity);
+    var updated = await Task.Run(() => _context.Update(entity));
     _context.SaveChanges();
+
+    return updated.Entity;
   }
 
-  public void Delete<T>(T entity) where T : class
-  {
-    _context.Remove<T>(entity);
-    _context.SaveChanges();
+    public void Delete<T>(T entity) where T : class
+    {
+      _context.Remove<T>(entity);
+      _context.SaveChanges();
+    }
   }
 }

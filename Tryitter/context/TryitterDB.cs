@@ -1,26 +1,29 @@
 using Microsoft.EntityFrameworkCore;
 using Tryitter.Models;
 
-public class TryitterDB : DbContext
+namespace Tryitter.Context
 {
-  public DbSet<User> Users { get; set; }
-  public DbSet<Post> Posts { get; set; }
-  public TryitterDB() { }
-  public TryitterDB(DbContextOptions<TryitterDB> options)
-        : base(options)
+  public class TryitterDB : DbContext
   {
-  }
-  protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-  {
-    if (!optionsBuilder.IsConfigured)
+    public DbSet<User> Users { get; set; }
+    public DbSet<Post> Posts { get; set; }
+    public TryitterDB() { }
+    public TryitterDB(DbContextOptions<TryitterDB> options)
+          : base(options)
     {
-      optionsBuilder.UseSqlServer(@"
-        Server=127.0.0.1;
-        User=SA;
-        Password=Tryitter123;
-        Database=Tryitter;
-        trustServerCertificate=true;
-      ");
+    }
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+      if (!optionsBuilder.IsConfigured)
+      {
+        optionsBuilder.UseSqlServer(@"
+          Server=127.0.0.1;
+          User=SA;
+          Password=Tryitter123;
+          Database=Tryitter;
+          trustServerCertificate=true;
+        ");
+      }
     }
   }
 }

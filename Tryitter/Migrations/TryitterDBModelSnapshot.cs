@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Tryitter.Context;
 
 #nullable disable
 
@@ -42,11 +43,7 @@ namespace Tryitter.Migrations
                     b.ToTable("Posts");
                 });
 
-<<<<<<< HEAD
-            modelBuilder.Entity("User", b =>
-=======
             modelBuilder.Entity("Tryitter.Models.User", b =>
->>>>>>> 77b5e40 (chore: Cria migrations iniciais pro banco)
                 {
                     b.Property<int>("UserID")
                         .ValueGeneratedOnAdd()
@@ -71,26 +68,16 @@ namespace Tryitter.Migrations
                     b.ToTable("Users");
                 });
 
-<<<<<<< HEAD
-            modelBuilder.Entity("Post", b =>
-                {
-                    b.HasOne("User", null)
-=======
             modelBuilder.Entity("Tryitter.Models.Post", b =>
                 {
                     b.HasOne("Tryitter.Models.User", null)
->>>>>>> 77b5e40 (chore: Cria migrations iniciais pro banco)
                         .WithMany("Posts")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-<<<<<<< HEAD
-            modelBuilder.Entity("User", b =>
-=======
             modelBuilder.Entity("Tryitter.Models.User", b =>
->>>>>>> 77b5e40 (chore: Cria migrations iniciais pro banco)
                 {
                     b.Navigation("Posts");
                 });

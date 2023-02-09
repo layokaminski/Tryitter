@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using Tryitter.Models;
+using Tryitter.Repository;
 
 [ApiController]
 [Route("[controller]")]

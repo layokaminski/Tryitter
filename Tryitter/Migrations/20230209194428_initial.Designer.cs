@@ -4,14 +4,15 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Tryitter.Context;
 
 #nullable disable
 
 namespace Tryitter.Migrations
 {
     [DbContext(typeof(TryitterDB))]
-    [Migration("20230209181525_Initial")]
-    partial class Initial
+    [Migration("20230209194428_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

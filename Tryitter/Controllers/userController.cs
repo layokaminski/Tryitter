@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using Tryitter.Models;
+using Tryitter.Repository;
 
 [ApiController]
 [Route("[controller]")]
@@ -10,16 +12,21 @@ public class UserController : ControllerBase
     _repository = repository;
   }
 
-  [HttpGet]
-  public async Task<IActionResult> GetUser()
+  [HttpGet("{id:int}")]
+  public async Task<IActionResult> GetUser(int id)
   {
-    throw new NotImplementedException();
+    var student = _repository.GetById<User>(id);
+
+    return Ok(student);
   }
 
   [HttpPost]
-  public async Task<IActionResult> Create(User user)
+  public async Task<IActionResult> Create([FromBody] User user)
   {
-    throw new NotImplementedException();
+    Console.WriteLine(user);
+    var student = await _repository.Create(user);
+
+    return CreatedAtAction("GetStudent", new { id = student.UserID }, student);
   }
 
   [HttpPut]

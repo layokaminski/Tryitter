@@ -37,8 +37,7 @@ public class PostController : ControllerBase
     return Ok(updatePost);
   }
 
-  [HttpDelete]
-  [Route("{id}")]
+  [HttpDelete("{id}")]
   public IActionResult Delete(int id)
   {
     _repository.Delete(id);

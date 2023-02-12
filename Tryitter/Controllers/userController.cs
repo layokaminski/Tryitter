@@ -28,9 +28,8 @@ public class UserController : ControllerBase
     return CreatedAtAction("GetUser", new { id = student.UserID }, student);
   }
 
-  [HttpPut]
-  [Route("{id}")]
-  public async Task<IActionResult> Put(int id)
+  [HttpPut("{id}")]
+  public async Task<IActionResult> Put([FromBody] User user, int id)
   {
     throw new NotImplementedException();
   }

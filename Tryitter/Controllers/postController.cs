@@ -7,35 +7,42 @@ using Tryitter.Repository;
 
 public class PostController : ControllerBase
 {
-  private readonly ITryRepository _repository;
-  public PostController(ITryRepository repository) 
+  private readonly IPostRepository _repository;
+  public PostController(IPostRepository repository) 
   {
     _repository = repository;
   }
 
-  [HttpGet]
-  public async Task<IActionResult> GetPost()
+  [HttpGet("{id:int}")]
+  public async Task<IActionResult> GetPost(int id)
   {
-    throw new NotImplementedException();
+    var post = await _repository.GetById(id);
+
+    return Ok(post);
   }
 
   [HttpPost]
-  public async Task<IActionResult> Create(Post Post)
+  public async Task<IActionResult> Create([FromBody] Post post)
   {
-    throw new NotImplementedException();
+    var postCreated = await _repository.Create(post);
+
+    return CreatedAtAction("GetPost", new { id = postCreated.PostId }, postCreated);
   }
 
-  [HttpPut]
-  [Route("{id}")]
-  public async Task<IActionResult> Put(int id)
+  [HttpPut("{id}")]
+  public async Task<IActionResult> Update([FromBody] Post post, int id)
   {
-    throw new NotImplementedException();
+    var updatePost = await _repository.Update(post, id);
+
+    return Ok(updatePost);
   }
 
   [HttpDelete]
   [Route("{id}")]
-  public async Task<IActionResult> Delete(int id)
+  public IActionResult Delete(int id)
   {
-    throw new NotImplementedException();
+    _repository.Delete(id);
+
+    return NoContent();
   }
 }

@@ -21,7 +21,9 @@ builder.Services.AddDbContext<DbContext>(options =>
         trustServerCertificate=true;
     "));
 });
+builder.Services.AddDbContext<DbContext, TryitterDB>();
 builder.Services.AddScoped<DbContext, TryitterDB>();
+builder.Services.AddScoped<IPostRepository, PostRepository>();
 builder.Services.AddScoped<ITryRepository, TryRepository>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

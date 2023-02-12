@@ -15,7 +15,7 @@ public class UserController : ControllerBase
   [HttpGet("{id:int}")]
   public async Task<IActionResult> GetUser(int id)
   {
-    var student = _repository.GetById<User>(id);
+    var student = await _repository.GetById<User>(id);
 
     return Ok(student);
   }
@@ -23,10 +23,9 @@ public class UserController : ControllerBase
   [HttpPost]
   public async Task<IActionResult> Create([FromBody] User user)
   {
-    Console.WriteLine(user);
     var student = await _repository.Create(user);
 
-    return CreatedAtAction("GetStudent", new { id = student.UserID }, student);
+    return CreatedAtAction("GetUser", new { id = student.UserID }, student);
   }
 
   [HttpPut]

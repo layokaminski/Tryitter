@@ -6,7 +6,7 @@ namespace Tryitter.Repository
   {
     public Task<IEnumerable<Post>> GetAll();
     public Task<Post?> GetById(int id);
-    public Task<Post> Create(Post post);
+    public Task<Post> Create(Post entity);
     public Task<Post> Update(Post entity, int id);
     public void Delete(int id);
   }

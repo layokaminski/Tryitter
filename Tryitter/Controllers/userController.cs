@@ -6,38 +6,41 @@ using Tryitter.Repository;
 [Route("[controller]")]
 public class UserController : ControllerBase
 {
-  private readonly ITryRepository _repository;
-  public UserController(ITryRepository repository) 
+  private readonly IUserRepository _repository;
+  public UserController(IUserRepository repository) 
   {
     _repository = repository;
   }
 
   [HttpGet("{id:int}")]
-  public async Task<IActionResult> GetUser(int id)
+  public async Task<IActionResult> GetUserById(int id)
   {
-    var student = await _repository.GetById<User>(id);
+    var user = await _repository.GetUserById(id);
 
-    return Ok(student);
+    return Ok(user);
   }
 
   [HttpPost]
-  public async Task<IActionResult> Create([FromBody] User user)
+  public async Task<IActionResult> CreateUser([FromBody] User user)
   {
-    var student = await _repository.Create(user);
+    var userCreated = await _repository.CreateUser(user);
 
-    return CreatedAtAction("GetUser", new { id = student.UserID }, student);
+    return CreatedAtAction("GetUser", new { id = userCreated.UserID }, userCreated);
   }
 
   [HttpPut("{id}")]
-  public async Task<IActionResult> Put([FromBody] User user, int id)
+  public async Task<IActionResult> UpdateUser([FromBody] User user, int id)
   {
-    throw new NotImplementedException();
+    var updateUser = await _repository.UpdateUser(user, id);
+
+    return Ok(updateUser);
   }
 
-  [HttpDelete]
-  [Route("{id}")]
-  public async Task<IActionResult> Delete(int id)
+  [HttpDelete("{id}")]
+  public IActionResult DeleteUser(int id)
   {
-    throw new NotImplementedException();
+    _repository.DeleteUser(id);
+
+    return NoContent();
   }
 }

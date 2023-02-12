@@ -24,7 +24,7 @@ builder.Services.AddDbContext<DbContext>(options =>
 builder.Services.AddDbContext<DbContext, TryitterDB>();
 builder.Services.AddScoped<DbContext, TryitterDB>();
 builder.Services.AddScoped<IPostRepository, PostRepository>();
-builder.Services.AddScoped<ITryRepository, TryRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

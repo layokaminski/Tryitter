@@ -9,7 +9,7 @@ namespace Tryitter.Token
 {
   public class TokenGenerator
   {
-    public string Generator(User user)
+    public string Generate(User user)
     {
       var tokenHandler = new JwtSecurityTokenHandler();
 

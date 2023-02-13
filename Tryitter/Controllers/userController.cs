@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tryitter.Models;
 using Tryitter.Repository;
+using Tryitter.Token;
 
 [ApiController]
 [Route("[controller]")]
@@ -26,7 +27,16 @@ public class UserController : ControllerBase
   {
     var student = await _repository.Create(user);
 
-    return CreatedAtAction("GetUser", new { id = student.UserID }, student);
+    if (student == null)
+    {
+      return BadRequest("Algo deu errado!");
+    }
+    
+    var token = new TokenGenerator().Generate(student);
+
+    return CreatedAtAction("GetUser", new { id = student.UserID }, token);
+
+    // return CreatedAtAction("GetUser", new { id = student.UserID }, student);
   }
 
   [HttpPut("{id}")]

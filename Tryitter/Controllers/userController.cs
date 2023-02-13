@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tryitter.Models;
 using Tryitter.Repository;
@@ -35,6 +36,7 @@ public class UserController : ControllerBase
   }
 
   [HttpDelete]
+  [Authorize(Policy = "login")]
   [Route("{id}")]
   public async Task<IActionResult> Delete(int id)
   {

@@ -29,6 +29,12 @@ builder.Services.AddScoped<ITryRepository, TryRepository>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddAuthorization(options => {
+    options.AddPolicy("login", policy => policy.RequireClaim("Id"));
+    options.AddPolicy("login", policy => policy.RequireClaim("Email"));
+    options.AddPolicy("login", policy => policy.RequireClaim("password"));
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

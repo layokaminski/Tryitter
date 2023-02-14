@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore;
 using Tryitter.Repository;
+using Tryitter.Models;
 
 namespace Tryitter.Repository
 {
@@ -13,7 +14,6 @@ namespace Tryitter.Repository
     {
       _context = context;
     }
-
     public async Task<IEnumerable<T>> GetAll<T>() where T : class
     {
       return await Task.Run(() => _context.Set<T>());

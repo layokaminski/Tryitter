@@ -7,6 +7,7 @@ namespace Tryitter.Models
   {
     [Key]
     public int PostId { get; set; }
+    [MaxLength(300)]
     public string Description { get; set; }
     [ForeignKey("UserId")]
     public int UserId { get; set; }

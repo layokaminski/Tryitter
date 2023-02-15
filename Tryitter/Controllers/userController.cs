@@ -1,6 +1,8 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tryitter.Models;
 using Tryitter.Repository;
+using Tryitter.Token;
 
 [ApiController]
 [Route("[controller]")]
@@ -25,7 +27,16 @@ public class UserController : ControllerBase
   {
     var userCreated = await _repository.CreateUser(user);
 
-    return CreatedAtAction("GetUser", new { id = userCreated.UserID }, userCreated);
+    if (userCreated == null)
+    {
+      return BadRequest("Algo deu errado!");
+    }
+    
+    var token = new TokenGenerator().Generate(userCreated);
+
+    return CreatedAtAction("GetUser", new { id = userCreated.UserID }, token);
+
+    // return CreatedAtAction("GetUser", new { id = student.UserID }, student);
   }
 
   [HttpPut("{id}")]
@@ -36,8 +47,10 @@ public class UserController : ControllerBase
     return Ok(updateUser);
   }
 
-  [HttpDelete("{id}")]
-  public IActionResult DeleteUser(int id)
+  [HttpDelete]
+  [Authorize(Policy = "login")]
+  [Route("{id}")]
+  public async Task<IActionResult> Delete(int id)
   {
     _repository.DeleteUser(id);
 

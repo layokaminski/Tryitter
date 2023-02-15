@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tryitter.Models;
 using Tryitter.Repository;
@@ -22,6 +23,7 @@ public class PostController : ControllerBase
   }
 
   [HttpPost]
+  [Authorize]
   public async Task<IActionResult> Create([FromBody] Post post)
   {
     var postCreated = await _repository.Create(post);

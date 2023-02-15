@@ -35,13 +35,26 @@ public class PostController : ControllerBase
   }
   [HttpGet]
   [Route("user/{id:int}")]
-public async Task<IActionResult> GetAllPostById(int id)
+  public async Task<IActionResult> GetAllPostById(int id)
   {
     var posts = await _repository.GetAllById(id);
 
     return Ok(posts);
   }
 
+  [HttpGet]
+  [Route("last/user/{id:int}")]
+  public async Task<IActionResult> GetAllLastById(int id)
+  {
+    var post = await _repository.GetLastById(id);
+
+    if (post == null)
+    {
+      return NotFound("Post não encontrado");
+    }
+
+    return Ok(post);
+  }
   [HttpPost]
   [Authorize]
   public async Task<IActionResult> Create([FromBody] Post post)

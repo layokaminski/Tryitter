@@ -31,6 +31,15 @@ namespace Tryitter.Repository
       return await _context.Posts.FindAsync(id);
     }
 
+    public async Task<Post?> GetLastById(int id)
+    {
+      var posts = await _context.Posts.Where(p => p.UserId == id).ToListAsync();
+
+      var lastpost = posts.LastOrDefault();
+
+      return lastpost;
+    } 
+
     public async Task<Post> Create(Post entity)
     {
         await _context.AddAsync(entity);

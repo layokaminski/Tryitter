@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Tryitter.Models;
 using System.Collections.ObjectModel;
 using Tryitter.Repository;
+using System.Net.Http.Headers;
+using Tryitter.Token;
 
 namespace Tryitter.Test;
 
@@ -75,9 +77,132 @@ public class UserControllerTest : IClassFixture<WebApplicationFactory<Program>>
     {
        
 
-        HttpResponseMessage response = await _client.GetAsync("User/1000");
+        HttpResponseMessage response = await _client.GetAsync("User/0");
 
         response.StatusCode.Should().Be(HttpStatusCode.NoContent);
 
     }
+
+    [Fact]
+    public async Task Should_Edit_Student()
+    {
+        Random rnd = new();
+        int num = rnd.Next(99);
+
+        var student = new User
+        {
+            UserID = num,
+            Name = "Usuário",
+            Email = "user@teste.com",
+            Password = "password",
+            Posts = new Collection<Post>(),
+        };
+
+        await _client.PostAsJsonAsync("/User", student);
+
+        student.Name = "Novo nome";
+
+        
+        HttpResponseMessage response = await _client.PutAsJsonAsync($"User/{num}", student);
+
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+
+    }
+
+    [Fact]
+    public async Task Should_Not_Edit_Student()
+    {
+        var student = new User
+        {
+            UserID = 0,
+            Name = "Usuário",
+            Email = "user@teste.com",
+            Password = "password",
+            Posts = new Collection<Post>(),
+        };
+       
+
+        HttpResponseMessage response = await _client.PutAsJsonAsync("User/o", student);
+
+        response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+
+    }
+
+    [Fact]
+    public async Task Should_Delete_Student()
+    {
+        Random rnd = new();
+        int num = rnd.Next(99);
+
+        var student = new User
+        {
+            UserID = num,
+            Name = "Usuário",
+            Email = "user@teste.com",
+            Password = "password",
+            Posts = new Collection<Post>(),
+        };
+
+        await _client.PostAsJsonAsync("/User", student);
+
+        var token = new TokenGenerator().Generate(student);
+        _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+        HttpResponseMessage response = await _client.DeleteAsync($"User/{num}");
+
+        response.StatusCode.Should().Be(HttpStatusCode.NoContent);
+
+    }
+
+    [Fact]
+    public async Task Should_Not_Delete_Student()
+    {
+        Random rnd = new();
+        int num = rnd.Next(99);
+
+        var student = new User
+        {
+            UserID = num,
+            Name = "Usuário",
+            Email = "user@teste.com",
+            Password = "password",
+            Posts = new Collection<Post>(),
+        };
+
+        await _client.PostAsJsonAsync("/User", student);
+
+        var token = new TokenGenerator().Generate(student);
+        _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+        HttpResponseMessage response = await _client.DeleteAsync("User/0");
+
+        response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+
+    }
+
+    [Fact]
+    public async Task Token_Required()
+    {
+        Random rnd = new();
+        int num = rnd.Next(99);
+
+        var student = new User
+        {
+            UserID = num,
+            Name = "Usuário",
+            Email = "user@teste.com",
+            Password = "password",
+            Posts = new Collection<Post>(),
+        };
+
+        await _client.PostAsJsonAsync("/User", student);
+
+
+        HttpResponseMessage response = await _client.DeleteAsync($"User/{num}");
+
+        response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
+
+    }
+
+
 }

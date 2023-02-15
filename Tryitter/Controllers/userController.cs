@@ -19,6 +19,11 @@ public class UserController : ControllerBase
   {
     var user = await _repository.GetUserById(id);
 
+    if (user == null)
+    {
+      return NoContent();
+    }
+
     return Ok(user);
   }
 
@@ -40,8 +45,16 @@ public class UserController : ControllerBase
   [HttpPut("{id}")]
   public async Task<IActionResult> UpdateUser([FromBody] User user, int id)
   {
-    var updateUser = await _repository.UpdateUser(user, id);
 
+    var getUser = await _repository.GetUserById(id);
+    
+    if (getUser == null)
+    {
+      return BadRequest("Algo deu errado!");
+    }
+
+    var updateUser = await _repository.UpdateUser(user, id);
+    
     return Ok(updateUser);
   }
 
@@ -50,6 +63,14 @@ public class UserController : ControllerBase
   [Route("{id}")]
   public async Task<IActionResult> Delete(int id)
   {
+
+     var getUser = await _repository.GetUserById(id);
+    
+    if (getUser == null)
+    {
+      return BadRequest("Algo deu errado!");
+    }
+    
     _repository.DeleteUser(id);
 
     return NoContent();

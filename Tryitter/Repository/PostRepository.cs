@@ -21,6 +21,11 @@ namespace Tryitter.Repository
       return await _context.Posts.ToListAsync();
     }
 
+    public async Task<IEnumerable<Post>> GetAllById(int id)
+    {
+      return await _context.Posts.Where(p => p.UserId == id).ToListAsync();
+    }
+
     public async Task<Post?> GetById(int id)
     {
       return await _context.Posts.FindAsync(id);

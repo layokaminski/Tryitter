@@ -23,7 +23,11 @@ namespace Tryitter.Repository
 
     public async Task<User?> GetUserById(int id)
     {
-      return await _context.Users.FindAsync(id);
+      var user = await _context.Users.FindAsync(id);
+
+      user.Password = "";
+
+      return user;
     }
 
     public async Task<User> CreateUser(User entity)

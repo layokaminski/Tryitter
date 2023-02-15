@@ -33,6 +33,14 @@ public class PostController : ControllerBase
 
     return Ok(post);
   }
+  [HttpGet]
+  [Route("user/{id:int}")]
+public async Task<IActionResult> GetAllPostById(int id)
+  {
+    var posts = await _repository.GetAllById(id);
+
+    return Ok(posts);
+  }
 
   [HttpPost]
   [Authorize]

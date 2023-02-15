@@ -1,8 +1,4 @@
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore;
-using Tryitter.Repository;
-using Tryitter.Models;
 
 namespace Tryitter.Repository
 {

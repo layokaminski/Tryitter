@@ -34,9 +34,7 @@ public class UserController : ControllerBase
     
     var token = new TokenGenerator().Generate(userCreated);
 
-    return CreatedAtAction("GetUser", new { id = userCreated.UserID }, token);
-
-    // return CreatedAtAction("GetUser", new { id = student.UserID }, student);
+    return Created("GetUser", new { token });
   }
 
   [HttpPut("{id}")]

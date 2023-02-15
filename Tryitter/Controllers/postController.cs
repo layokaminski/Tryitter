@@ -14,6 +14,18 @@ public class PostController : ControllerBase
     _repository = repository;
   }
 
+  [HttpGet]
+  public async Task<IActionResult> GetAll()
+  {
+    var posts = await _repository.GetAll();
+    if (posts == null)
+    {
+      return BadRequest("Nenhum post encontrado");
+    }
+
+    return Ok(posts);
+  }
+  
   [HttpGet("{id:int}")]
   public async Task<IActionResult> GetPost(int id)
   {

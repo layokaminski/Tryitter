@@ -33,11 +33,11 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// builder.Services.AddAuthorization(options => {
-//     options.AddPolicy("login", policy => policy.RequireClaim("Id"));
-//     options.AddPolicy("login", policy => policy.RequireClaim("Email"));
-//     options.AddPolicy("login", policy => policy.RequireClaim("password"));
-// });
+builder.Services.AddAuthorization(options => {
+    options.AddPolicy("login", policy => policy.RequireClaim("Id"));
+    options.AddPolicy("login", policy => policy.RequireClaim("Email"));
+    options.AddPolicy("login", policy => policy.RequireClaim("password"));
+});
 
 builder.Services.AddAuthentication(options => {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

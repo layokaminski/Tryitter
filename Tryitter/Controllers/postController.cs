@@ -60,8 +60,15 @@ public async Task<IActionResult> GetAllPostById(int id)
   }
 
   [HttpDelete("{id}")]
-  public IActionResult Delete(int id)
+  public async Task<IActionResult> DeleteAsync(int id)
   {
+    var post = await _repository.GetById(id);
+
+    if (post == null)
+    {
+      return BadRequest("Algo deu errado!");
+    }
+
     _repository.Delete(id);
 
     return NoContent();

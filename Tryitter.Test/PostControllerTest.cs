@@ -52,6 +52,58 @@ public class PostControllerTest : IClassFixture<WebApplicationFactory<Program>>
     }
 
     [Fact]
+    public async Task Should_Not_Create_Post()
+    {
+         var student = new User
+        {
+            Name = "Usuário",
+            Email = "user@teste.com",
+            Password = "password",
+            Posts = new Collection<Post>(),
+        };
+
+
+        await _client.PostAsJsonAsync("/User", student);
+
+        var token = new TokenGenerator().Generate(student);
+        _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+        var post = new Post();
+
+
+        HttpResponseMessage response = await _client.PostAsJsonAsync("/Post", post);
+
+        response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+    }
+
+
+    [Fact]
+    public async Task Token_Required()
+    {
+        var student = new User
+        {
+            Name = "Usuário",
+            Email = "user@teste.com",
+            Password = "password",
+            Posts = new Collection<Post>(),
+        };
+
+
+        await _client.PostAsJsonAsync("/User", student);
+
+
+        var post = new Post
+        {
+            Description = "Postado com sucesso!",
+            UserId = 1,
+        };
+
+        HttpResponseMessage response = await _client.PostAsJsonAsync("/Post", post);
+
+        response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
+    }
+
+    [Fact]
     public async Task Should_Get_Post()
     {
        var student = new User
@@ -85,9 +137,32 @@ public class PostControllerTest : IClassFixture<WebApplicationFactory<Program>>
     public async Task Should_Not_Get_Post()
     {
        
-        HttpResponseMessage response = await _client.GetAsync("/Post/1000");
+        HttpResponseMessage response = await _client.GetAsync("/Post/0");
 
         response.StatusCode.Should().Be(HttpStatusCode.NoContent);
+    }
+
+    [Fact]
+    public async Task Should_Get_Posts()
+    {
+       var student = new User
+        {
+            Name = "Usuário",
+            Email = "user@teste.com",
+            Password = "password",
+            Posts = new Collection<Post>(),
+        };
+
+
+        await _client.PostAsJsonAsync("/User", student);
+
+        var token = new TokenGenerator().Generate(student);
+        _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+    
+        HttpResponseMessage response = await _client.GetAsync("/Post");
+
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
     }
     
     [Fact]
@@ -125,8 +200,13 @@ public class PostControllerTest : IClassFixture<WebApplicationFactory<Program>>
     [Fact]
     public async Task Should_Delete_Post()
     {
+         Random rnd = new();
+
+         int userId = rnd.Next(99);
+
         var student = new User
         {
+            UserID = userId,
             Name = "Usuário",
             Email = "user@teste.com",
             Password = "password",
@@ -139,21 +219,91 @@ public class PostControllerTest : IClassFixture<WebApplicationFactory<Program>>
         var token = new TokenGenerator().Generate(student);
         _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-        Random rnd = new();
-        int num = rnd.Next(99);
+       
+        int postId = rnd.Next(99);
 
         var post = new Post
         {
-            PostId = num,
+            PostId = postId,
             Description = "Postado com sucesso!",
-            UserId = 1,
+            UserId = userId,
         };
 
         await _client.PostAsJsonAsync("/Post", post);
 
-        HttpResponseMessage response = await _client.DeleteAsync($"/Post/{num}");
+        HttpResponseMessage response = await _client.DeleteAsync($"/Post/{postId}");
 
         response.StatusCode.Should().Be(HttpStatusCode.NoContent);
+    }
+
+    [Fact]
+    public async Task Should_Not_Delete_Post()
+    {
+         Random rnd = new();
+
+         int userId = rnd.Next(99);
+
+        var student = new User
+        {
+            UserID = userId,
+            Name = "Usuário",
+            Email = "user@teste.com",
+            Password = "password",
+            Posts = new Collection<Post>(),
+        };
+
+
+        await _client.PostAsJsonAsync("/User", student);
+
+        var token = new TokenGenerator().Generate(student);
+        _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+
+        HttpResponseMessage response = await _client.DeleteAsync("/Post/0");
+
+        response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+    }
+
+    [Fact]
+    public async Task Should_Get_Posts_By_User()
+    {
+        Random rnd = new();
+
+         int userId = rnd.Next(99);
+
+        var student = new User
+        {
+            UserID = userId,
+            Name = "Usuário",
+            Email = "user@teste.com",
+            Password = "password",
+            Posts = new Collection<Post>(),
+        };
+
+
+        await _client.PostAsJsonAsync("/User", student);
+
+        var token = new TokenGenerator().Generate(student);
+        _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+        var post = new Post
+        {
+            Description = "Postado com sucesso!",
+            UserId = 1,
+        };
+
+        var post2 = new Post
+        {
+            Description = "Postado com sucesso  2!",
+            UserId = 1,
+        };
+
+        await _client.PostAsJsonAsync("/Post", post);
+        await _client.PostAsJsonAsync("/Post", post2);
+    
+        HttpResponseMessage response = await _client.GetAsync($"/Post/user/{userId}");
+
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
     }
     
 

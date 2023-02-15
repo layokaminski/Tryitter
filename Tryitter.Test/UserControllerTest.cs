@@ -5,6 +5,7 @@ using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Tryitter.Models;
 using System.Collections.ObjectModel;
+using Tryitter.Repository;
 
 namespace Tryitter.Test;
 
@@ -48,8 +49,12 @@ public class UserControllerTest : IClassFixture<WebApplicationFactory<Program>>
     [Fact]
     public async Task Should_Get_Student()
     {
+        Random rnd = new();
+        int num = rnd.Next(99);
+
         var student = new User
         {
+            UserID = num,
             Name = "Usuário",
             Email = "user@teste.com",
             Password = "password",
@@ -58,7 +63,8 @@ public class UserControllerTest : IClassFixture<WebApplicationFactory<Program>>
 
         await _client.PostAsJsonAsync("/User", student);
 
-        HttpResponseMessage response = await _client.GetAsync("User/1");
+        
+        HttpResponseMessage response = await _client.GetAsync($"User/{num}");
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
 
@@ -69,7 +75,7 @@ public class UserControllerTest : IClassFixture<WebApplicationFactory<Program>>
     {
        
 
-        HttpResponseMessage response = await _client.GetAsync("User/99");
+        HttpResponseMessage response = await _client.GetAsync("User/1000");
 
         response.StatusCode.Should().Be(HttpStatusCode.NoContent);
 

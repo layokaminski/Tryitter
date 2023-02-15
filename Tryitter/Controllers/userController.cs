@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tryitter.Models;
-using Tryitter.Repository;
 using Tryitter.Token;
+using Tryitter.Repository;
 
 [ApiController]
 [Route("[controller]")]

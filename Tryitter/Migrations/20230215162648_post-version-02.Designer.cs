@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Tryitter.Context;
 
@@ -10,9 +11,11 @@ using Tryitter.Context;
 namespace Tryitter.Migrations
 {
     [DbContext(typeof(TryitterDB))]
-    partial class TryitterDBModelSnapshot : ModelSnapshot
+    [Migration("20230215162648_post-version-02")]
+    partial class postversion02
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

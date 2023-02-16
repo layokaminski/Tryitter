@@ -65,6 +65,7 @@ public class PostController : ControllerBase
   }
 
   [HttpPut("{id}")]
+  [Authorize]
   public async Task<IActionResult> Update([FromBody] Post post, int id)
   {
     var updatePost = await _repository.Update(post, id);
@@ -73,7 +74,8 @@ public class PostController : ControllerBase
   }
 
   [HttpDelete("{id}")]
-  public async Task<IActionResult> DeleteAsync(int id)
+  [Authorize]
+  public IActionResult Delete(int id)
   {
     var post = await _repository.GetById(id);
 

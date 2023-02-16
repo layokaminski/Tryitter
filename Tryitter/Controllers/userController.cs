@@ -43,6 +43,7 @@ public class UserController : ControllerBase
   }
 
   [HttpPut("{id}")]
+  [Authorize]
   public async Task<IActionResult> UpdateUser([FromBody] User user, int id)
   {
 
@@ -59,7 +60,7 @@ public class UserController : ControllerBase
   }
 
   [HttpDelete]
-  [Authorize(Policy = "login")]
+  [Authorize]
   [Route("{id}")]
   public async Task<IActionResult> Delete(int id)
   {

@@ -77,6 +77,13 @@ public class PostController : ControllerBase
   [Authorize]
   public IActionResult Delete(int id)
   {
+    var post = await _repository.GetById(id);
+
+    if (post == null)
+    {
+      return BadRequest("Algo deu errado!");
+    }
+
     _repository.Delete(id);
 
     return NoContent();

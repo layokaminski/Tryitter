@@ -25,7 +25,10 @@ namespace Tryitter.Repository
     {
       var user = await _context.Users.FindAsync(id);
 
-      user.Password = "";
+      if (user != null)
+      {
+        user.Password = "";
+      }
 
       return user;
     }
